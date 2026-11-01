@@ -1,22 +1,27 @@
-# AI usage
 
-Keep all three headings exactly as they are. If this file is missing or any heading is
-missing, the grader stops and gives 0 ("AI_USAGE.md missing or incomplete"). The content
-is not scored, but your Track Mentor reads it and the W8 defence can ask about it.
+# AI usage
 
 ## Tools
 
-<!-- Which tools you used (ChatGPT, Copilot, Claude, Cursor, none...) and for which parts. -->
+I used ChatGPT to help me understand the task requirements, implement the FastAPI endpoints, create the SQLAlchemy models and Alembic migration, and debug errors.
+
+I used VS Code for editing, pytest for testing, and Alembic for checking the database migration.
 
 ## What AI got wrong
 
-<!-- At least one thing an assistant got wrong that you changed, and how you noticed
-(a test failed, the docs said otherwise, you ran it). -->
+ChatGPT initially provided an incomplete implementation of the transfer endpoint, which needed to be corrected.
+
+It also used a normalized request body for idempotency comparison instead of preserving differences in the original JSON body.
+
+I reviewed the README requirements and updated the implementation. I also fixed an indentation issue in main.py and reran the public tests, which passed.
 
 ## In my own words
 
-<!-- Answer without AI, one or two sentences each. -->
-
 1. Why does a transfer to someone else's account return 404 and not 403?
 
+Returning 404 protects the privacy of other customers' accounts. A 403 response could reveal that the account exists, while 404 does not confirm its existence
+
 2. What would happen to a customer if your idempotency record were written in a separate transaction after the transfer?
+
+if the transfer succeeds but the system fails before saving the idempotency record, retrying the same request could execute the transfer again. This could cause the customer to be charged twice
+
